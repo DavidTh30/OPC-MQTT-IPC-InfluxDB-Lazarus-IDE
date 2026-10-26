@@ -1,0 +1,156 @@
+object MainForm: TMainForm
+  Left = 8
+  Height = 680
+  Top = 90
+  Width = 1100
+  Caption = 'Snake Arena (BGRABitmap) - MQTT'
+  ClientHeight = 680
+  ClientWidth = 1100
+  KeyPreview = True
+  Position = poScreenCenter
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  object PanelTop: TPanel
+    Left = 0
+    Height = 44
+    Top = 0
+    Width = 1100
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 44
+    ClientWidth = 1100
+    TabOrder = 0
+    object LabelHost: TLabel
+      Left = 10
+      Height = 15
+      Top = 14
+      Width = 25
+      Caption = 'Host'
+    end
+    object EditHost: TEdit
+      Left = 42
+      Height = 23
+      Top = 10
+      Width = 120
+      TabOrder = 0
+      Text = '127.0.0.1'
+    end
+    object LabelPort: TLabel
+      Left = 172
+      Height = 15
+      Top = 14
+      Width = 22
+      Caption = 'Port'
+    end
+    object EditPort: TEdit
+      Left = 200
+      Height = 23
+      Top = 10
+      Width = 55
+      TabOrder = 1
+      Text = '1886'
+    end
+    object LabelName: TLabel
+      Left = 268
+      Height = 15
+      Top = 14
+      Width = 32
+      Caption = 'Name'
+    end
+    object EditName: TEdit
+      Left = 306
+      Height = 23
+      Top = 10
+      Width = 120
+      MaxLength = 20
+      TabOrder = 2
+    end
+    object ColorSnake: TColorBox
+      Left = 436
+      Height = 22
+      Top = 10
+      Width = 130
+      Selected = clAqua
+      Style = [cbStandardColors, cbExtendedColors, cbPrettyNames]
+      ItemHeight = 16
+      TabOrder = 3
+    end
+    object ButtonConnect: TButton
+      Left = 578
+      Height = 28
+      Top = 8
+      Width = 100
+      Caption = 'Connect'
+      TabOrder = 4
+      OnClick = ButtonConnectClick
+    end
+    object ButtonJoin: TButton
+      Left = 686
+      Height = 28
+      Top = 8
+      Width = 110
+      Caption = 'Join / Respawn'
+      TabOrder = 5
+      OnClick = ButtonJoinClick
+    end
+    object LabelState: TLabel
+      Left = 810
+      Height = 15
+      Top = 14
+      Width = 280
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'Not connected'
+    end
+  end
+  object PanelRight: TPanel
+    Left = 870
+    Height = 636
+    Top = 44
+    Width = 230
+    Align = alRight
+    BevelOuter = bvNone
+    ClientHeight = 636
+    ClientWidth = 230
+    TabOrder = 1
+    object LabelHelp: TLabel
+      Left = 4
+      Height = 48
+      Top = 4
+      Width = 222
+      Align = alTop
+      AutoSize = False
+      BorderSpacing.Around = 4
+      Caption = 'Arrows or W A S D: steer.  Enter: respawn now.  Eat the red food, don''t hit walls or snakes.'
+      WordWrap = True
+    end
+    object MemoEvents: TMemo
+      Left = 0
+      Height = 580
+      Top = 56
+      Width = 230
+      Align = alClient
+      ReadOnly = True
+      ScrollBars = ssVertical
+      TabOrder = 0
+      TabStop = False
+    end
+  end
+  object PaintArena: TPaintBox
+    Left = 0
+    Height = 636
+    Top = 44
+    Width = 870
+    Align = alClient
+    OnMouseDown = PaintArenaMouseDown
+    OnPaint = PaintArenaPaint
+  end
+  object Timer1: TTimer
+    Interval = 15
+    OnTimer = Timer1Timer
+    Left = 760
+    Top = 200
+  end
+end
