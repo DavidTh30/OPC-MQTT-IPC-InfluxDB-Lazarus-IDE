@@ -1,0 +1,281 @@
+object MainForm: TMainForm
+  Left = 340
+  Height = 560
+  Top = 160
+  Width = 900
+  Caption = 'Snake Arena Server (MQTT)'
+  ClientHeight = 540
+  ClientWidth = 900
+  Menu = MainMenu1
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelTop: TPanel
+    Left = 0
+    Height = 112
+    Top = 0
+    Width = 900
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 112
+    ClientWidth = 900
+    TabOrder = 0
+    object LabelPort: TLabel
+      Left = 12
+      Height = 15
+      Top = 15
+      Width = 22
+      Caption = 'Port'
+    end
+    object EditPort: TEdit
+      Left = 44
+      Height = 23
+      Top = 11
+      Width = 60
+      TabOrder = 0
+      Text = '1886'
+    end
+    object LabelSize: TLabel
+      Left = 120
+      Height = 15
+      Top = 15
+      Width = 61
+      Caption = 'Arena (cells)'
+    end
+    object SpinW: TSpinEdit
+      Left = 190
+      Height = 23
+      Top = 11
+      Width = 55
+      MaxValue = 200
+      MinValue = 16
+      TabOrder = 1
+      Value = 48
+    end
+    object LabelX: TLabel
+      Left = 250
+      Height = 15
+      Top = 15
+      Width = 6
+      Caption = 'x'
+    end
+    object SpinH: TSpinEdit
+      Left = 262
+      Height = 23
+      Top = 11
+      Width = 55
+      MaxValue = 200
+      MinValue = 12
+      TabOrder = 2
+      Value = 32
+    end
+    object LabelTick: TLabel
+      Left = 334
+      Height = 15
+      Top = 15
+      Width = 47
+      Caption = 'Tick (ms)'
+    end
+    object SpinTick: TSpinEdit
+      Left = 390
+      Height = 23
+      Top = 11
+      Width = 60
+      Increment = 10
+      MaxValue = 1000
+      MinValue = 30
+      TabOrder = 3
+      Value = 100
+    end
+    object CheckWrap: TCheckBox
+      Left = 466
+      Height = 19
+      Top = 13
+      Width = 160
+      Caption = 'Wrap around (no walls)'
+      TabOrder = 4
+    end
+    object ButtonStart: TButton
+      Left = 786
+      Height = 30
+      Top = 8
+      Width = 100
+      Anchors = [akTop, akRight]
+      Caption = 'Start'
+      OnClick = ButtonStartClick
+      TabOrder = 5
+    end
+    object LabelBots: TLabel
+      Left = 12
+      Height = 15
+      Top = 49
+      Width = 25
+      Caption = 'Bots'
+    end
+    object SpinBots: TSpinEdit
+      Left = 44
+      Height = 23
+      Top = 45
+      Width = 60
+      MaxValue = 20
+      OnChange = SpinBotsChange
+      TabOrder = 6
+      Value = 3
+    end
+    object LabelFood: TLabel
+      Left = 120
+      Height = 15
+      Top = 49
+      Width = 28
+      Caption = 'Food'
+    end
+    object SpinFood: TSpinEdit
+      Left = 190
+      Height = 23
+      Top = 45
+      Width = 55
+      MaxValue = 200
+      MinValue = 1
+      OnChange = SpinFoodChange
+      TabOrder = 7
+      Value = 10
+    end
+    object CheckAutoStart: TCheckBox
+      Left = 270
+      Height = 19
+      Top = 47
+      Width = 140
+      Caption = 'Start at program start'
+      TabOrder = 8
+    end
+    object ShapeState: TShape
+      Left = 12
+      Height = 22
+      Top = 80
+      Width = 22
+      Brush.Color = clSilver
+      Shape = stCircle
+    end
+    object LabelState: TLabel
+      Left = 44
+      Height = 22
+      Top = 81
+      Width = 840
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'Server stopped'
+      Font.Height = -14
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object GridPlayers: TStringGrid
+    Left = 0
+    Height = 268
+    Top = 112
+    Width = 900
+    Align = alClient
+    ColCount = 9
+    Columns = <
+      item
+        Title.Caption = 'Name'
+        Width = 140
+      end
+      item
+        Title.Caption = 'Type'
+        Width = 60
+      end
+      item
+        Title.Caption = 'State'
+        Width = 80
+      end
+      item
+        Title.Caption = 'Score'
+        Width = 55
+      end
+      item
+        Title.Caption = 'Best'
+        Width = 55
+      end
+      item
+        Title.Caption = 'Kills'
+        Width = 50
+      end
+      item
+        Title.Caption = 'Length'
+        Width = 55
+      end
+      item
+        Title.Caption = 'Colour'
+        Width = 70
+      end
+      item
+        Title.Caption = 'Client id'
+        Width = 170
+      end>
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goSmoothScroll]
+    RowCount = 1
+    TabOrder = 1
+  end
+  object Splitter1: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 380
+    Width = 900
+    Align = alBottom
+    ResizeAnchor = akBottom
+  end
+  object MemoLog: TMemo
+    Left = 0
+    Height = 155
+    Top = 385
+    Width = 900
+    Align = alBottom
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 2
+  end
+  object MainMenu1: TMainMenu
+    Left = 600
+    Top = 200
+    object MenuFile: TMenuItem
+      Caption = '&File'
+      object MenuClearLog: TMenuItem
+        Caption = '&Clear log'
+        OnClick = MenuClearLogClick
+      end
+      object MenuExit: TMenuItem
+        Caption = 'E&xit'
+        OnClick = MenuExitClick
+      end
+    end
+    object MenuServer: TMenuItem
+      Caption = '&Server'
+      object MenuStart: TMenuItem
+        Caption = '&Start'
+        ShortCut = 116
+        OnClick = MenuStartClick
+      end
+      object MenuStop: TMenuItem
+        Caption = 'S&top'
+        ShortCut = 117
+        OnClick = MenuStopClick
+      end
+    end
+    object MenuHelp: TMenuItem
+      Caption = '&Help'
+      object MenuAbout: TMenuItem
+        Caption = '&About'
+        OnClick = MenuAboutClick
+      end
+    end
+  end
+  object Timer1: TTimer
+    Interval = 250
+    OnTimer = Timer1Timer
+    Left = 680
+    Top = 200
+  end
+end
