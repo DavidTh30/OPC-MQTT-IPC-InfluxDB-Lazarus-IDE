@@ -1,0 +1,79 @@
+object MainForm: TMainForm
+  Left = 200
+  Height = 800
+  Top = 60
+  Width = 1280
+  Caption = 'Machine HMI - Filling line 1 (InfluxDB + BGRABitmap)'
+  ClientHeight = 800
+  ClientWidth = 1280
+  Color = 1708558
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelTop: TPanel
+    Left = 0
+    Height = 36
+    Top = 0
+    Width = 1280
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 36
+    ClientWidth = 1280
+    TabOrder = 0
+    object LabelUrl: TLabel
+      Left = 10
+      Height = 15
+      Top = 11
+      Width = 21
+      Caption = 'URL'
+    end
+    object EditUrl: TEdit
+      Left = 40
+      Height = 23
+      Top = 7
+      Width = 220
+      TabOrder = 0
+      Text = 'http://127.0.0.1:8086'
+    end
+    object LabelDb: TLabel
+      Left = 272
+      Height = 15
+      Top = 11
+      Width = 51
+      Caption = 'Database'
+    end
+    object EditDb: TEdit
+      Left = 330
+      Height = 23
+      Top = 7
+      Width = 110
+      TabOrder = 1
+      Text = 'machine'
+    end
+    object ButtonConnect: TButton
+      Left = 452
+      Height = 26
+      Top = 5
+      Width = 100
+      Caption = 'Connect'
+      OnClick = ButtonConnectClick
+      TabOrder = 2
+    end
+  end
+  object PaintHmi: TPaintBox
+    Left = 0
+    Height = 764
+    Top = 36
+    Width = 1280
+    Align = alClient
+    OnMouseDown = PaintHmiMouseDown
+    OnMouseMove = PaintHmiMouseMove
+    OnPaint = PaintHmiPaint
+  end
+  object Timer1: TTimer
+    Interval = 33
+    OnTimer = Timer1Timer
+    Left = 760
+    Top = 200
+  end
+end

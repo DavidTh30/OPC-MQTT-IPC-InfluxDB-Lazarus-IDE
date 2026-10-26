@@ -1,0 +1,142 @@
+object MainForm: TMainForm
+  Left = 360
+  Height = 420
+  Top = 160
+  Width = 900
+  Caption = 'Machine Simulator - filler1 (data and commands through InfluxDB)'
+  ClientHeight = 420
+  ClientWidth = 900
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelTop: TPanel
+    Left = 0
+    Height = 130
+    Top = 0
+    Width = 900
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 130
+    ClientWidth = 900
+    TabOrder = 0
+    object LabelUrl: TLabel
+      Left = 10
+      Height = 15
+      Top = 14
+      Width = 21
+      Caption = 'URL'
+    end
+    object EditUrl: TEdit
+      Left = 40
+      Height = 23
+      Top = 10
+      Width = 220
+      TabOrder = 0
+      Text = 'http://127.0.0.1:8086'
+    end
+    object LabelDb: TLabel
+      Left = 272
+      Height = 15
+      Top = 14
+      Width = 51
+      Caption = 'Database'
+    end
+    object EditDb: TEdit
+      Left = 330
+      Height = 23
+      Top = 10
+      Width = 110
+      TabOrder = 1
+      Text = 'machine'
+    end
+    object ButtonRun: TButton
+      Left = 456
+      Height = 28
+      Top = 8
+      Width = 110
+      Caption = 'Run machine'
+      OnClick = ButtonRunClick
+      TabOrder = 2
+    end
+    object ButtonStart: TButton
+      Left = 590
+      Height = 28
+      Top = 8
+      Width = 70
+      Caption = 'Start'
+      OnClick = ButtonStartClick
+      TabOrder = 3
+    end
+    object ButtonStop: TButton
+      Left = 664
+      Height = 28
+      Top = 8
+      Width = 70
+      Caption = 'Stop'
+      OnClick = ButtonStopClick
+      TabOrder = 4
+    end
+    object ButtonReset: TButton
+      Left = 738
+      Height = 28
+      Top = 8
+      Width = 70
+      Caption = 'Reset'
+      OnClick = ButtonResetClick
+      TabOrder = 5
+    end
+    object ButtonClear: TButton
+      Left = 812
+      Height = 28
+      Top = 8
+      Width = 80
+      Caption = 'Clear count'
+      OnClick = ButtonClearClick
+      TabOrder = 6
+    end
+    object ShapeState: TShape
+      Left = 10
+      Height = 20
+      Top = 48
+      Width = 20
+      Brush.Color = clSilver
+      Shape = stCircle
+    end
+    object LabelState: TLabel
+      Left = 40
+      Height = 20
+      Top = 49
+      Width = 850
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'machine off'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object LabelValues: TLabel
+      Left = 10
+      Height = 48
+      Top = 76
+      Width = 880
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      WordWrap = True
+    end
+  end
+  object MemoLog: TMemo
+    Left = 0
+    Height = 290
+    Top = 130
+    Width = 900
+    Align = alClient
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 1
+  end
+  object Timer1: TTimer
+    Interval = 250
+    OnTimer = Timer1Timer
+    Left = 760
+    Top = 200
+  end
+end
