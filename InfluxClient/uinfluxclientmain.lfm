@@ -1,0 +1,358 @@
+object MainForm: TMainForm
+  Left = -38
+  Height = 720
+  Top = 119
+  Width = 1100
+  Caption = 'InfluxDB Client (Lazarus)'
+  ClientHeight = 720
+  ClientWidth = 1100
+  Position = poScreenCenter
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelTop: TPanel
+    Left = 0
+    Height = 44
+    Top = 0
+    Width = 1100
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 44
+    ClientWidth = 1100
+    TabOrder = 0
+    object LabelUrl: TLabel
+      Left = 10
+      Height = 15
+      Top = 14
+      Width = 21
+      Caption = 'URL'
+    end
+    object EditUrl: TEdit
+      Left = 40
+      Height = 23
+      Top = 10
+      Width = 220
+      TabOrder = 0
+      Text = 'http://127.0.0.1:8086'
+    end
+    object LabelUser: TLabel
+      Left = 272
+      Height = 15
+      Top = 14
+      Width = 23
+      Caption = 'User'
+    end
+    object EditUser: TEdit
+      Left = 302
+      Height = 23
+      Top = 10
+      Width = 100
+      TabOrder = 1
+      TextHint = 'optional'
+    end
+    object LabelPass: TLabel
+      Left = 412
+      Height = 15
+      Top = 14
+      Width = 50
+      Caption = 'Password'
+    end
+    object EditPass: TEdit
+      Left = 468
+      Height = 23
+      Top = 10
+      Width = 100
+      EchoMode = emPassword
+      PasswordChar = '*'
+      TabOrder = 2
+    end
+    object ButtonConnect: TButton
+      Left = 580
+      Height = 28
+      Top = 8
+      Width = 100
+      Caption = 'Connect'
+      Default = True
+      TabOrder = 3
+      OnClick = ButtonConnectClick
+    end
+    object ShapeState: TShape
+      Left = 692
+      Height = 18
+      Top = 13
+      Width = 18
+      Brush.Color = clSilver
+      Shape = stCircle
+    end
+    object LabelState: TLabel
+      Left = 718
+      Height = 15
+      Top = 14
+      Width = 372
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'not connected'
+    end
+  end
+  object PanelLeft: TPanel
+    Left = 0
+    Height = 676
+    Top = 44
+    Width = 270
+    Align = alLeft
+    BevelOuter = bvNone
+    ClientHeight = 676
+    ClientWidth = 270
+    TabOrder = 1
+    object LabelTree: TLabel
+      Left = 4
+      Height = 30
+      Top = 0
+      Width = 266
+      Align = alTop
+      AutoSize = False
+      BorderSpacing.Left = 4
+      Caption = 'Databases  (open a node; double-click = query)'
+      Layout = tlCenter
+    end
+    object TreeDb: TTreeView
+      Left = 0
+      Height = 616
+      Top = 30
+      Width = 270
+      Align = alClient
+      ReadOnly = True
+      TabOrder = 0
+      Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      OnDblClick = TreeDbDblClick
+      OnExpanding = TreeDbExpanding
+    end
+    object ButtonRefresh: TButton
+      Left = 0
+      Height = 30
+      Top = 646
+      Width = 270
+      Align = alBottom
+      Caption = 'Refresh'
+      TabOrder = 1
+      OnClick = ButtonRefreshClick
+    end
+  end
+  object SplitterLeft: TSplitter
+    Left = 270
+    Height = 676
+    Top = 44
+    Width = 5
+  end
+  object PanelMain: TPanel
+    Left = 275
+    Height = 676
+    Top = 44
+    Width = 825
+    Align = alClient
+    BevelOuter = bvNone
+    ClientHeight = 676
+    ClientWidth = 825
+    TabOrder = 2
+    object PanelQuery: TPanel
+      Left = 0
+      Height = 150
+      Top = 0
+      Width = 825
+      Align = alTop
+      BevelOuter = bvNone
+      ClientHeight = 150
+      ClientWidth = 825
+      TabOrder = 0
+      object LabelDb: TLabel
+        Left = 8
+        Height = 15
+        Top = 10
+        Width = 48
+        Caption = 'Database'
+      end
+      object ComboDb: TComboBox
+        Left = 66
+        Height = 23
+        Top = 6
+        Width = 160
+        ItemHeight = 15
+        TabOrder = 0
+      end
+      object LabelHist: TLabel
+        Left = 240
+        Height = 15
+        Top = 10
+        Width = 38
+        Caption = 'History'
+      end
+      object ComboHist: TComboBox
+        Left = 286
+        Height = 23
+        Top = 6
+        Width = 530
+        Anchors = [akTop, akLeft, akRight]
+        ItemHeight = 15
+        Style = csDropDownList
+        TabOrder = 1
+        OnSelect = ComboHistSelect
+      end
+      object MemoQuery: TMemo
+        Left = 8
+        Height = 76
+        Top = 36
+        Width = 808
+        Anchors = [akTop, akLeft, akRight]
+        Font.Name = 'Consolas'
+        ParentFont = False
+        ScrollBars = ssAutoVertical
+        TabOrder = 2
+        OnKeyDown = MemoQueryKeyDown
+      end
+      object ButtonRun: TButton
+        Left = 8
+        Height = 28
+        Top = 117
+        Width = 120
+        Caption = 'Run (Ctrl+Enter)'
+        TabOrder = 3
+        OnClick = ButtonRunClick
+      end
+      object CheckUtc: TCheckBox
+        Left = 140
+        Height = 19
+        Top = 122
+        Width = 87
+        Caption = 'Times in UTC'
+        TabOrder = 4
+        OnChange = CheckUtcChange
+      end
+      object LabelInfo: TLabel
+        Left = 240
+        Height = 15
+        Top = 124
+        Width = 576
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+      end
+    end
+    object PageControl1: TPageControl
+      Left = 0
+      Height = 526
+      Top = 150
+      Width = 825
+      ActivePage = TabTable
+      Align = alClient
+      TabIndex = 0
+      TabOrder = 1
+      object TabTable: TTabSheet
+        Caption = 'Table'
+        ClientHeight = 498
+        ClientWidth = 817
+        object GridResult: TStringGrid
+          Left = 0
+          Height = 498
+          Top = 0
+          Width = 817
+          Align = alClient
+          ColCount = 1
+          FixedCols = 0
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goSmoothScroll]
+          RowCount = 1
+          TabOrder = 0
+        end
+      end
+      object TabChart: TTabSheet
+        Caption = 'Chart'
+      end
+      object TabJson: TTabSheet
+        Caption = 'JSON'
+        ClientHeight = 498
+        ClientWidth = 817
+        object MemoJson: TMemo
+          Left = 0
+          Height = 498
+          Top = 0
+          Width = 817
+          Align = alClient
+          Font.Name = 'Consolas'
+          ParentFont = False
+          ReadOnly = True
+          ScrollBars = ssBoth
+          TabOrder = 0
+          WordWrap = False
+        end
+      end
+      object TabWrite: TTabSheet
+        Caption = 'Write (line protocol)'
+        ClientHeight = 498
+        ClientWidth = 817
+        object PanelWriteTop: TPanel
+          Left = 0
+          Height = 38
+          Top = 0
+          Width = 817
+          Align = alTop
+          BevelOuter = bvNone
+          ClientHeight = 38
+          ClientWidth = 817
+          TabOrder = 0
+          object LabelPrec: TLabel
+            Left = 8
+            Height = 15
+            Top = 12
+            Width = 48
+            Caption = 'Precision'
+          end
+          object ComboPrec: TComboBox
+            Left = 64
+            Height = 23
+            Top = 8
+            Width = 60
+            ItemHeight = 15
+            ItemIndex = 2
+            Items.Strings = (
+              'ns'
+              'u'
+              'ms'
+              's'
+            )
+            Style = csDropDownList
+            TabOrder = 0
+            Text = 'ms'
+          end
+          object ButtonWrite: TButton
+            Left = 136
+            Height = 26
+            Top = 6
+            Width = 140
+            Caption = 'Write to database'
+            TabOrder = 1
+            OnClick = ButtonWriteClick
+          end
+          object LabelWrite: TLabel
+            Left = 290
+            Height = 15
+            Top = 12
+            Width = 520
+            Anchors = [akTop, akLeft, akRight]
+            AutoSize = False
+            Caption = 'measurement,tag=value field=1.5,other=2i <timestamp>  (one point per line)'
+          end
+        end
+        object MemoWrite: TMemo
+          Left = 0
+          Height = 460
+          Top = 38
+          Width = 817
+          Align = alClient
+          Font.Name = 'Consolas'
+          ParentFont = False
+          ScrollBars = ssBoth
+          TabOrder = 1
+          WordWrap = False
+        end
+      end
+    end
+  end
+end
