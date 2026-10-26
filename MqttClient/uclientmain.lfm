@@ -1,0 +1,573 @@
+object MainForm: TMainForm
+  Left = 125
+  Height = 700
+  Top = 131
+  Width = 1000
+  Caption = 'MQTT Client'
+  ClientHeight = 700
+  ClientWidth = 1000
+  Menu = MainMenu1
+  Position = poScreenCenter
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelConn: TPanel
+    Left = 0
+    Height = 130
+    Top = 0
+    Width = 1000
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 130
+    ClientWidth = 1000
+    TabOrder = 0
+    object LabelHost: TLabel
+      Left = 10
+      Height = 15
+      Top = 14
+      Width = 25
+      Caption = 'Host'
+    end
+    object EditHost: TEdit
+      Left = 70
+      Height = 23
+      Top = 10
+      Width = 130
+      TabOrder = 0
+      Text = '127.0.0.1'
+    end
+    object LabelPort: TLabel
+      Left = 212
+      Height = 15
+      Top = 14
+      Width = 22
+      Caption = 'Port'
+    end
+    object EditPort: TEdit
+      Left = 242
+      Height = 23
+      Top = 10
+      Width = 55
+      TabOrder = 1
+      Text = '1884'
+    end
+    object LabelClientId: TLabel
+      Left = 310
+      Height = 15
+      Top = 14
+      Width = 45
+      Caption = 'Client ID'
+    end
+    object EditClientId: TEdit
+      Left = 366
+      Height = 23
+      Top = 10
+      Width = 150
+      TabOrder = 2
+    end
+    object LabelKeepAlive: TLabel
+      Left = 528
+      Height = 15
+      Top = 14
+      Width = 69
+      Caption = 'Keep alive (s)'
+    end
+    object EditKeepAlive: TEdit
+      Left = 610
+      Height = 23
+      Top = 10
+      Width = 45
+      TabOrder = 3
+      Text = '60'
+    end
+    object ComboLevel: TComboBox
+      Left = 668
+      Height = 23
+      Top = 10
+      Width = 100
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'MQTT 3.1.1'
+        'MQTT 3.1'
+      )
+      Style = csDropDownList
+      TabOrder = 4
+      Text = 'MQTT 3.1.1'
+    end
+    object ButtonConnect: TButton
+      Left = 884
+      Height = 30
+      Top = 8
+      Width = 105
+      Anchors = [akTop, akRight]
+      Caption = 'Connect'
+      TabOrder = 13
+      OnClick = ButtonConnectClick
+    end
+    object LabelUser: TLabel
+      Left = 10
+      Height = 15
+      Top = 44
+      Width = 23
+      Caption = 'User'
+    end
+    object EditUser: TEdit
+      Left = 70
+      Height = 23
+      Top = 40
+      Width = 130
+      TabOrder = 5
+    end
+    object LabelPassword: TLabel
+      Left = 212
+      Height = 15
+      Top = 44
+      Width = 50
+      Caption = 'Password'
+    end
+    object EditPassword: TEdit
+      Left = 270
+      Height = 23
+      Top = 40
+      Width = 110
+      EchoMode = emPassword
+      PasswordChar = '*'
+      TabOrder = 6
+    end
+    object CheckClean: TCheckBox
+      Left = 396
+      Height = 19
+      Top = 42
+      Width = 89
+      Caption = 'Clean session'
+      Checked = True
+      State = cbChecked
+      TabOrder = 7
+    end
+    object CheckAutoReconnect: TCheckBox
+      Left = 506
+      Height = 19
+      Top = 42
+      Width = 100
+      Caption = 'Auto reconnect'
+      Checked = True
+      State = cbChecked
+      TabOrder = 8
+    end
+    object CheckAutoConnect: TCheckBox
+      Left = 620
+      Height = 19
+      Top = 42
+      Width = 102
+      Caption = 'Connect at start'
+      TabOrder = 16
+    end
+    object LabelWill: TLabel
+      Left = 10
+      Height = 15
+      Top = 74
+      Width = 50
+      Caption = 'Will topic'
+    end
+    object EditWillTopic: TEdit
+      Left = 70
+      Height = 23
+      Top = 70
+      Width = 227
+      TabOrder = 9
+      TextHint = 'empty = no last will'
+    end
+    object LabelWillPayload: TLabel
+      Left = 310
+      Height = 15
+      Top = 74
+      Width = 42
+      Caption = 'Payload'
+    end
+    object EditWillPayload: TEdit
+      Left = 366
+      Height = 23
+      Top = 70
+      Width = 150
+      TabOrder = 10
+      Text = 'offline'
+    end
+    object ComboWillQoS: TComboBox
+      Left = 528
+      Height = 23
+      Top = 70
+      Width = 75
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'QoS 0'
+        'QoS 1'
+        'QoS 2'
+      )
+      Style = csDropDownList
+      TabOrder = 11
+      Text = 'QoS 0'
+    end
+    object CheckWillRetain: TCheckBox
+      Left = 614
+      Height = 19
+      Top = 72
+      Width = 51
+      Caption = 'Retain'
+      TabOrder = 12
+    end
+    object ShapeState: TShape
+      Left = 10
+      Height = 20
+      Top = 102
+      Width = 20
+      Brush.Color = clSilver
+      Shape = stCircle
+    end
+    object LabelState: TLabel
+      Left = 40
+      Height = 20
+      Top = 103
+      Width = 640
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'Disconnected'
+      Font.Height = -14
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object CheckLogMessages: TCheckBox
+      Left = 742
+      Height = 19
+      Top = 103
+      Width = 118
+      Anchors = [akTop, akRight]
+      Caption = 'Log every message'
+      TabOrder = 14
+    end
+    object ButtonClearTopics: TButton
+      Left = 884
+      Height = 25
+      Top = 99
+      Width = 105
+      Anchors = [akTop, akRight]
+      Caption = 'Clear table'
+      TabOrder = 15
+      OnClick = ButtonClearTopicsClick
+    end
+  end
+  object PanelLeft: TPanel
+    Left = 0
+    Height = 415
+    Top = 130
+    Width = 300
+    Align = alLeft
+    BevelOuter = bvNone
+    ClientHeight = 415
+    ClientWidth = 300
+    TabOrder = 1
+    object GroupSubscribe: TGroupBox
+      Left = 0
+      Height = 215
+      Top = 0
+      Width = 300
+      Align = alTop
+      Caption = 'Subscribe'
+      ClientHeight = 195
+      ClientWidth = 296
+      TabOrder = 0
+      object LabelFilter: TLabel
+        Left = 8
+        Height = 15
+        Top = 4
+        Width = 55
+        Caption = 'Topic filter'
+      end
+      object EditFilter: TEdit
+        Left = 8
+        Height = 23
+        Top = 22
+        Width = 190
+        TabOrder = 0
+        TextHint = 'for example nonlinear/#'
+        OnKeyPress = EditFilterKeyPress
+      end
+      object ComboSubQoS: TComboBox
+        Left = 206
+        Height = 23
+        Top = 22
+        Width = 80
+        ItemHeight = 15
+        ItemIndex = 0
+        Items.Strings = (
+          'QoS 0'
+          'QoS 1'
+          'QoS 2'
+        )
+        Style = csDropDownList
+        TabOrder = 1
+        Text = 'QoS 0'
+      end
+      object ButtonSubscribe: TButton
+        Left = 8
+        Height = 25
+        Top = 52
+        Width = 100
+        Caption = 'Subscribe'
+        TabOrder = 2
+        OnClick = ButtonSubscribeClick
+      end
+      object ButtonUnsubscribe: TButton
+        Left = 116
+        Height = 25
+        Top = 52
+        Width = 100
+        Caption = 'Unsubscribe'
+        TabOrder = 3
+        OnClick = ButtonUnsubscribeClick
+      end
+      object ListSubs: TListBox
+        Left = 8
+        Height = 105
+        Top = 84
+        Width = 278
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        ItemHeight = 0
+        TabOrder = 4
+      end
+    end
+    object GroupPublish: TGroupBox
+      Left = 0
+      Height = 200
+      Top = 215
+      Width = 300
+      Align = alClient
+      Caption = 'Publish'
+      ClientHeight = 180
+      ClientWidth = 296
+      TabOrder = 1
+      object PanelPubTop: TPanel
+        Left = 0
+        Height = 70
+        Top = 0
+        Width = 296
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 70
+        ClientWidth = 296
+        TabOrder = 0
+        object LabelPubTopic: TLabel
+          Left = 8
+          Height = 15
+          Top = 4
+          Width = 28
+          Caption = 'Topic'
+        end
+        object EditPubTopic: TEdit
+          Left = 8
+          Height = 23
+          Top = 22
+          Width = 278
+          Anchors = [akTop, akLeft, akRight]
+          TabOrder = 0
+        end
+        object LabelPayload: TLabel
+          Left = 8
+          Height = 15
+          Top = 52
+          Width = 160
+          Caption = 'Payload (Ctrl+Enter = Publish)'
+        end
+      end
+      object MemoPayload: TMemo
+        Left = 8
+        Height = 70
+        Top = 70
+        Width = 278
+        Align = alClient
+        BorderSpacing.Left = 8
+        BorderSpacing.Right = 10
+        ScrollBars = ssAutoVertical
+        TabOrder = 1
+        OnKeyDown = MemoPayloadKeyDown
+      end
+      object PanelPubBottom: TPanel
+        Left = 0
+        Height = 40
+        Top = 140
+        Width = 296
+        Align = alBottom
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 296
+        TabOrder = 2
+        object LabelPubQoS: TLabel
+          Left = 8
+          Height = 15
+          Top = 12
+          Width = 22
+          Caption = 'QoS'
+        end
+        object ComboPubQoS: TComboBox
+          Left = 36
+          Height = 23
+          Top = 8
+          Width = 50
+          ItemHeight = 15
+          ItemIndex = 0
+          Items.Strings = (
+            '0'
+            '1'
+            '2'
+          )
+          Style = csDropDownList
+          TabOrder = 0
+          Text = '0'
+        end
+        object CheckRetain: TCheckBox
+          Left = 96
+          Height = 19
+          Top = 10
+          Width = 51
+          Caption = 'Retain'
+          TabOrder = 1
+        end
+        object ButtonPublish: TButton
+          Left = 186
+          Height = 28
+          Top = 6
+          Width = 100
+          Anchors = [akTop, akRight]
+          Caption = 'Publish'
+          TabOrder = 2
+          OnClick = ButtonPublishClick
+        end
+      end
+    end
+  end
+  object SplitterLeft: TSplitter
+    Left = 300
+    Height = 415
+    Top = 130
+    Width = 5
+  end
+  object GridTopics: TStringGrid
+    Left = 305
+    Height = 415
+    Top = 130
+    Width = 695
+    Align = alClient
+    ColCount = 6
+    Columns = <    
+      item
+        Title.Caption = 'Topic'
+        Width = 230
+      end    
+      item
+        Title.Caption = 'Value'
+        Width = 230
+      end    
+      item
+        Title.Caption = 'QoS'
+        Width = 40
+      end    
+      item
+        Title.Caption = 'Retained'
+        Width = 60
+      end    
+      item
+        Title.Caption = 'Count'
+        Width = 55
+      end    
+      item
+        Title.Caption = 'Time'
+        Width = 85
+      end>
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goThumbTracking, goSmoothScroll]
+    PopupMenu = PopupTopics
+    RowCount = 1
+    TabOrder = 2
+    OnDblClick = GridTopicsDblClick
+  end
+  object SplitterLog: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 545
+    Width = 1000
+    Align = alBottom
+    ResizeAnchor = akBottom
+  end
+  object MemoLog: TMemo
+    Left = 0
+    Height = 150
+    Top = 550
+    Width = 1000
+    Align = alBottom
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 3
+  end
+  object MainMenu1: TMainMenu
+    Left = 600
+    Top = 200
+    object MenuFile: TMenuItem
+      Caption = '&File'
+      object MenuClearLog: TMenuItem
+        Caption = '&Clear log'
+        OnClick = MenuClearLogClick
+      end
+      object MenuExit: TMenuItem
+        Caption = 'E&xit'
+        OnClick = MenuExitClick
+      end
+    end
+    object MenuConnection: TMenuItem
+      Caption = '&Connection'
+      object MenuConnect: TMenuItem
+        Caption = '&Connect'
+        ShortCut = 116
+        OnClick = MenuConnectClick
+      end
+      object MenuDisconnect: TMenuItem
+        Caption = '&Disconnect'
+        ShortCut = 117
+        OnClick = MenuDisconnectClick
+      end
+    end
+    object MenuHelp: TMenuItem
+      Caption = '&Help'
+      object MenuAbout: TMenuItem
+        Caption = '&About'
+        OnClick = MenuAboutClick
+      end
+    end
+  end
+  object PopupTopics: TPopupMenu
+    Left = 680
+    Top = 200
+    object MenuCopySet: TMenuItem
+      Caption = 'Edit as <topic>/set (simulator write)'
+      OnClick = MenuCopySetClick
+    end
+    object MenuCopyPublish: TMenuItem
+      Caption = 'Copy topic and value to Publish'
+      OnClick = MenuCopyPublishClick
+    end
+    object MenuSep1: TMenuItem
+      Caption = '-'
+    end
+    object MenuClearTopics: TMenuItem
+      Caption = 'Clear table'
+      OnClick = ButtonClearTopicsClick
+    end
+  end
+  object Timer1: TTimer
+    Interval = 100
+    OnTimer = Timer1Timer
+    Left = 760
+    Top = 200
+  end
+end
