@@ -1,0 +1,512 @@
+object MainForm: TMainForm
+  Left = 113
+  Height = 660
+  Top = 136
+  Width = 960
+  Caption = 'MQTT Stream Server'
+  ClientHeight = 660
+  ClientWidth = 960
+  Menu = MainMenu1
+  Position = poScreenCenter
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelTop: TPanel
+    Left = 0
+    Height = 110
+    Top = 0
+    Width = 960
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 110
+    ClientWidth = 960
+    TabOrder = 0
+    object LabelPort: TLabel
+      Left = 12
+      Height = 15
+      Top = 15
+      Width = 22
+      Caption = 'Port'
+    end
+    object EditPort: TEdit
+      Left = 66
+      Height = 23
+      Top = 11
+      Width = 60
+      TabOrder = 0
+      Text = '1885'
+    end
+    object LabelPrefix: TLabel
+      Left = 140
+      Height = 15
+      Top = 15
+      Width = 61
+      Caption = 'Topic prefix'
+    end
+    object EditPrefix: TEdit
+      Left = 208
+      Height = 23
+      Top = 11
+      Width = 110
+      TabOrder = 1
+      Text = 'stream'
+    end
+    object CheckAutoStart: TCheckBox
+      Left = 334
+      Height = 19
+      Top = 13
+      Width = 130
+      Caption = 'Start at program start'
+      TabOrder = 2
+    end
+    object ButtonStart: TButton
+      Left = 846
+      Height = 30
+      Top = 8
+      Width = 100
+      Anchors = [akTop, akRight]
+      Caption = 'Start'
+      TabOrder = 3
+      OnClick = ButtonStartClick
+    end
+    object LabelOutput: TLabel
+      Left = 12
+      Height = 15
+      Top = 47
+      Width = 40
+      Caption = 'Output'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object LabelRate: TLabel
+      Left = 66
+      Height = 15
+      Top = 47
+      Width = 50
+      Caption = 'Rate (ms)'
+    end
+    object EditRate: TEdit
+      Left = 124
+      Height = 23
+      Top = 43
+      Width = 60
+      TabOrder = 4
+      Text = '100'
+      OnEditingDone = OutputChange
+    end
+    object LabelFormat: TLabel
+      Left = 198
+      Height = 15
+      Top = 47
+      Width = 42
+      Caption = 'Payload'
+    end
+    object ComboFormat: TComboBox
+      Left = 250
+      Height = 23
+      Top = 43
+      Width = 150
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'Value only (1.234)'
+        'JSON {"t": .., "v": ..}'
+      )
+      Style = csDropDownList
+      TabOrder = 5
+      Text = 'Value only (1.234)'
+      OnChange = OutputChange
+    end
+    object LabelQoS: TLabel
+      Left = 414
+      Height = 15
+      Top = 47
+      Width = 22
+      Caption = 'QoS'
+    end
+    object ComboQoS: TComboBox
+      Left = 442
+      Height = 23
+      Top = 43
+      Width = 50
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        '0'
+        '1'
+        '2'
+      )
+      Style = csDropDownList
+      TabOrder = 6
+      Text = '0'
+      OnChange = OutputChange
+    end
+    object CheckRetain: TCheckBox
+      Left = 506
+      Height = 19
+      Top = 45
+      Width = 51
+      Caption = 'Retain'
+      TabOrder = 7
+      OnChange = OutputChange
+    end
+    object CheckCombined: TCheckBox
+      Left = 574
+      Height = 19
+      Top = 45
+      Width = 279
+      Caption = 'Combined JSON topic (all values in one message)'
+      Checked = True
+      State = cbChecked
+      TabOrder = 8
+      OnChange = OutputChange
+    end
+    object ShapeState: TShape
+      Left = 12
+      Height = 22
+      Top = 78
+      Width = 22
+      Brush.Color = clSilver
+      Shape = stCircle
+    end
+    object LabelState: TLabel
+      Left = 44
+      Height = 22
+      Top = 79
+      Width = 900
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'Server stopped'
+      Font.Height = -15
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 395
+    Top = 110
+    Width = 960
+    ActivePage = TabGen
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 1
+    object TabGen: TTabSheet
+      Caption = 'Generator'
+      ClientHeight = 367
+      ClientWidth = 952
+      object GridGen: TStringGrid
+        Left = 0
+        Height = 327
+        Top = 0
+        Width = 952
+        Align = alClient
+        ColCount = 9
+        Columns = <        
+          item
+            ButtonStyle = cbsCheckboxColumn
+            Title.Caption = 'On'
+            Width = 34
+          end        
+          item
+            Title.Caption = 'Name'
+            Width = 110
+          end        
+          item
+            ButtonStyle = cbsPickList
+            Title.Caption = 'Shape'
+            Width = 100
+          end        
+          item
+            Title.Caption = 'Amplitude'
+            Width = 75
+          end        
+          item
+            Title.Caption = 'Offset'
+            Width = 70
+          end        
+          item
+            Title.Caption = 'Period (s)'
+            Width = 70
+          end        
+          item
+            Title.Caption = 'Decimals'
+            Width = 60
+          end        
+          item
+            ReadOnly = True
+            Title.Caption = 'Value'
+            Width = 100
+          end        
+          item
+            ReadOnly = True
+            Title.Caption = 'Topic'
+            Width = 300
+          end>
+        FixedCols = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goEditing, goSmoothScroll]
+        RowCount = 1
+        TabOrder = 0
+        OnCheckboxToggled = GridGenCheckboxToggled
+        OnEditingDone = GridGenEditingDone
+      end
+      object PanelGenBottom: TPanel
+        Left = 0
+        Height = 40
+        Top = 327
+        Width = 952
+        Align = alBottom
+        BevelOuter = bvNone
+        ClientHeight = 40
+        ClientWidth = 952
+        TabOrder = 1
+        object ButtonGenRun: TButton
+          Left = 8
+          Height = 28
+          Top = 6
+          Width = 130
+          Caption = 'Pause generator'
+          TabOrder = 0
+          OnClick = ButtonGenRunClick
+        end
+        object ButtonAdd: TButton
+          Left = 150
+          Height = 28
+          Top = 6
+          Width = 100
+          Caption = 'Add channel'
+          TabOrder = 1
+          OnClick = ButtonAddClick
+        end
+        object ButtonDelete: TButton
+          Left = 258
+          Height = 28
+          Top = 6
+          Width = 100
+          Caption = 'Delete channel'
+          TabOrder = 2
+          OnClick = ButtonDeleteClick
+        end
+        object LabelGenHint: TLabel
+          Left = 372
+          Height = 15
+          Top = 13
+          Width = 605
+          Caption = 'Every sample is published at the rate. Shapes: Sine Triangle Square Sawtooth Ramp Random RandomWalk Constant'
+        end
+      end
+    end
+    object TabCsv: TTabSheet
+      Caption = 'CSV replay'
+      ClientHeight = 367
+      ClientWidth = 952
+      object PanelCsvTop: TPanel
+        Left = 0
+        Height = 100
+        Top = 0
+        Width = 952
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 100
+        ClientWidth = 952
+        TabOrder = 0
+        object LabelFile: TLabel
+          Left = 8
+          Height = 15
+          Top = 13
+          Width = 18
+          Caption = 'File'
+        end
+        object EditFile: TEdit
+          Left = 48
+          Height = 23
+          Top = 9
+          Width = 780
+          Anchors = [akTop, akLeft, akRight]
+          ReadOnly = True
+          TabOrder = 0
+          TextHint = 'a PLC Data Logger CSV file (DataLogger\Logs\mm-yyyy\dd-mm-yyyy.csv)'
+        end
+        object ButtonBrowse: TButton
+          Left = 838
+          Height = 25
+          Top = 8
+          Width = 106
+          Anchors = [akTop, akRight]
+          Caption = 'Open...'
+          TabOrder = 1
+          OnClick = ButtonBrowseClick
+        end
+        object LabelSpeed: TLabel
+          Left = 8
+          Height = 15
+          Top = 45
+          Width = 32
+          Caption = 'Speed'
+        end
+        object ComboSpeed: TComboBox
+          Left = 48
+          Height = 23
+          Top = 41
+          Width = 170
+          ItemHeight = 15
+          ItemIndex = 2
+          Items.Strings = (
+            'x 0.1'
+            'x 0.5'
+            'x 1 (recorded timing)'
+            'x 2'
+            'x 5'
+            'x 10'
+            'x 100'
+            'one row per Rate'
+          )
+          Style = csDropDownList
+          TabOrder = 2
+          Text = 'x 1 (recorded timing)'
+          OnChange = CsvOptionChange
+        end
+        object CheckLoop: TCheckBox
+          Left = 230
+          Height = 19
+          Top = 43
+          Width = 45
+          Caption = 'Loop'
+          Checked = True
+          State = cbChecked
+          TabOrder = 3
+          OnChange = CsvOptionChange
+        end
+        object ButtonPlay: TButton
+          Left = 300
+          Height = 28
+          Top = 38
+          Width = 80
+          Caption = 'Play'
+          TabOrder = 4
+          OnClick = ButtonPlayClick
+        end
+        object ButtonPause: TButton
+          Left = 386
+          Height = 28
+          Top = 38
+          Width = 80
+          Caption = 'Pause'
+          TabOrder = 5
+          OnClick = ButtonPauseClick
+        end
+        object ButtonStop: TButton
+          Left = 472
+          Height = 28
+          Top = 38
+          Width = 80
+          Caption = 'Stop'
+          TabOrder = 6
+          OnClick = ButtonStopClick
+        end
+        object ProgressCsv: TProgressBar
+          Left = 8
+          Height = 14
+          Top = 76
+          Width = 300
+          TabOrder = 7
+        end
+        object LabelCsvState: TLabel
+          Left = 320
+          Height = 15
+          Top = 75
+          Width = 620
+          Anchors = [akTop, akLeft, akRight]
+          AutoSize = False
+          Caption = 'No file loaded'
+        end
+      end
+      object GridCsv: TStringGrid
+        Left = 0
+        Height = 267
+        Top = 100
+        Width = 952
+        Align = alClient
+        ColCount = 2
+        Columns = <        
+          item
+            Title.Caption = 'Topic'
+            Width = 320
+          end        
+          item
+            Title.Caption = 'Last value'
+            Width = 300
+          end>
+        FixedCols = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goSmoothScroll]
+        RowCount = 1
+        TabOrder = 1
+      end
+    end
+  end
+  object SplitterLog: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 505
+    Width = 960
+    Align = alBottom
+    ResizeAnchor = akBottom
+  end
+  object MemoLog: TMemo
+    Left = 0
+    Height = 150
+    Top = 510
+    Width = 960
+    Align = alBottom
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 2
+  end
+  object MainMenu1: TMainMenu
+    Left = 600
+    Top = 200
+    object MenuFile: TMenuItem
+      Caption = '&File'
+      object MenuClearLog: TMenuItem
+        Caption = '&Clear log'
+        OnClick = MenuClearLogClick
+      end
+      object MenuExit: TMenuItem
+        Caption = 'E&xit'
+        OnClick = MenuExitClick
+      end
+    end
+    object MenuServer: TMenuItem
+      Caption = '&Server'
+      object MenuStart: TMenuItem
+        Caption = '&Start'
+        ShortCut = 116
+        OnClick = MenuStartClick
+      end
+      object MenuStop: TMenuItem
+        Caption = 'S&top'
+        ShortCut = 117
+        OnClick = MenuStopClick
+      end
+    end
+    object MenuHelp: TMenuItem
+      Caption = '&Help'
+      object MenuAbout: TMenuItem
+        Caption = '&About'
+        OnClick = MenuAboutClick
+      end
+    end
+  end
+  object OpenDialog1: TOpenDialog
+    Filter = 'CSV files (*.csv)|*.csv|All files|*.*'
+    Left = 680
+    Top = 200
+  end
+  object Timer1: TTimer
+    Interval = 250
+    OnTimer = Timer1Timer
+    Left = 760
+    Top = 200
+  end
+end
