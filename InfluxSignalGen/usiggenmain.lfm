@@ -1,0 +1,407 @@
+object MainForm: TMainForm
+  Left = 137
+  Height = 600
+  Top = 125
+  Width = 980
+  Caption = 'InfluxDB Signal Generator (Lazarus)'
+  ClientHeight = 600
+  ClientWidth = 980
+  Position = poScreenCenter
+  LCLVersion = '4.8.0.0'
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelTop: TPanel
+    Left = 0
+    Height = 108
+    Top = 0
+    Width = 980
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 108
+    ClientWidth = 980
+    TabOrder = 0
+    object LabelUrl: TLabel
+      Left = 10
+      Height = 15
+      Top = 13
+      Width = 21
+      Caption = 'URL'
+    end
+    object EditUrl: TEdit
+      Left = 76
+      Height = 23
+      Top = 9
+      Width = 200
+      TabOrder = 0
+      Text = 'http://127.0.0.1:8086'
+      OnEditingDone = SettingChange
+    end
+    object LabelUser: TLabel
+      Left = 288
+      Height = 15
+      Top = 13
+      Width = 23
+      Caption = 'User'
+    end
+    object EditUser: TEdit
+      Left = 318
+      Height = 23
+      Top = 9
+      Width = 90
+      TabOrder = 1
+      TextHint = 'optional'
+      OnEditingDone = SettingChange
+    end
+    object LabelPass: TLabel
+      Left = 418
+      Height = 15
+      Top = 13
+      Width = 50
+      Caption = 'Password'
+    end
+    object EditPass: TEdit
+      Left = 474
+      Height = 23
+      Top = 9
+      Width = 90
+      EchoMode = emPassword
+      PasswordChar = '*'
+      TabOrder = 2
+      OnEditingDone = SettingChange
+    end
+    object LabelDb: TLabel
+      Left = 576
+      Height = 15
+      Top = 13
+      Width = 48
+      Caption = 'Database'
+    end
+    object EditDb: TEdit
+      Left = 634
+      Height = 23
+      Top = 9
+      Width = 110
+      TabOrder = 3
+      Text = 'signals'
+      OnEditingDone = SettingChange
+    end
+    object ButtonTest: TButton
+      Left = 752
+      Height = 25
+      Top = 8
+      Width = 80
+      Caption = 'Test'
+      TabOrder = 4
+      OnClick = ButtonTestClick
+    end
+    object ButtonLive: TButton
+      Left = 866
+      Height = 30
+      Top = 6
+      Width = 104
+      Anchors = [akTop, akRight]
+      Caption = 'Start live'
+      TabOrder = 5
+      OnClick = ButtonLiveClick
+    end
+    object LabelMeas: TLabel
+      Left = 10
+      Height = 15
+      Top = 45
+      Width = 73
+      Caption = 'Measurement'
+    end
+    object EditMeas: TEdit
+      Left = 84
+      Height = 23
+      Top = 41
+      Width = 110
+      TabOrder = 6
+      Text = 'signals'
+      OnEditingDone = SettingChange
+    end
+    object LabelTags: TLabel
+      Left = 204
+      Height = 15
+      Top = 45
+      Width = 23
+      Caption = 'Tags'
+    end
+    object EditTags: TEdit
+      Left = 236
+      Height = 23
+      Top = 41
+      Width = 170
+      TabOrder = 7
+      TextHint = 'site=lab, line=2'
+      OnEditingDone = SettingChange
+    end
+    object LabelLayout: TLabel
+      Left = 416
+      Height = 15
+      Top = 45
+      Width = 36
+      Caption = 'Layout'
+    end
+    object ComboLayout: TComboBox
+      Left = 460
+      Height = 23
+      Top = 41
+      Width = 230
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'one point, channels as fields'
+        'one point per channel (tag channel)'
+      )
+      Style = csDropDownList
+      TabOrder = 8
+      Text = 'one point, channels as fields'
+      OnChange = SettingChange
+    end
+    object LabelRate: TLabel
+      Left = 700
+      Height = 15
+      Top = 45
+      Width = 50
+      Caption = 'Rate (ms)'
+    end
+    object SpinRate: TSpinEdit
+      Left = 756
+      Height = 23
+      Top = 41
+      Width = 70
+      Increment = 100
+      MaxValue = 3600000
+      MinValue = 10
+      TabOrder = 9
+      Value = 1000
+      OnChange = SettingChange
+    end
+    object LabelSend: TLabel
+      Left = 834
+      Height = 15
+      Top = 45
+      Width = 53
+      Caption = 'Send (ms)'
+    end
+    object SpinSend: TSpinEdit
+      Left = 892
+      Height = 23
+      Top = 41
+      Width = 78
+      Increment = 100
+      MaxValue = 60000
+      MinValue = 100
+      TabOrder = 10
+      Value = 1000
+      OnChange = SettingChange
+    end
+    object ShapeState: TShape
+      Left = 10
+      Height = 20
+      Top = 78
+      Width = 20
+      Brush.Color = clSilver
+      Shape = stCircle
+    end
+    object LabelState: TLabel
+      Left = 40
+      Height = 20
+      Top = 79
+      Width = 930
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'stopped'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+  end
+  object GridCh: TStringGrid
+    Left = 0
+    Height = 252
+    Top = 108
+    Width = 980
+    Align = alClient
+    ColCount = 9
+    Columns = <    
+      item
+        ButtonStyle = cbsCheckboxColumn
+        Title.Caption = 'On'
+        Width = 34
+      end    
+      item
+        Title.Caption = 'Name (field)'
+        Width = 130
+      end    
+      item
+        ButtonStyle = cbsPickList
+        Title.Caption = 'Shape'
+        Width = 100
+      end    
+      item
+        Title.Caption = 'Amplitude'
+        Width = 80
+      end    
+      item
+        Title.Caption = 'Offset'
+        Width = 80
+      end    
+      item
+        Title.Caption = 'Period (s)'
+        Width = 80
+      end    
+      item
+        Title.Caption = 'Noise (+/-)'
+        Width = 80
+      end    
+      item
+        Title.Caption = 'Decimals'
+        Width = 64
+      end    
+      item
+        ReadOnly = True
+        Title.Caption = 'Value'
+        Width = 120
+      end>
+    FixedCols = 0
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goEditing, goSmoothScroll]
+    RowCount = 1
+    TabOrder = 1
+    OnCheckboxToggled = GridChCheckboxToggled
+    OnEditingDone = GridChEditingDone
+  end
+  object PanelBottom: TPanel
+    Left = 0
+    Height = 100
+    Top = 360
+    Width = 980
+    Align = alBottom
+    BevelOuter = bvNone
+    ClientHeight = 100
+    ClientWidth = 980
+    TabOrder = 2
+    object ButtonAdd: TButton
+      Left = 8
+      Height = 26
+      Top = 6
+      Width = 100
+      Caption = 'Add channel'
+      TabOrder = 0
+      OnClick = ButtonAddClick
+    end
+    object ButtonDelete: TButton
+      Left = 114
+      Height = 26
+      Top = 6
+      Width = 100
+      Caption = 'Delete channel'
+      TabOrder = 1
+      OnClick = ButtonDeleteClick
+    end
+    object GroupBackfill: TGroupBox
+      Left = 8
+      Height = 58
+      Top = 38
+      Width = 964
+      Anchors = [akTop, akLeft, akRight]
+      Caption = ' Backfill: the same signals for a past time range '
+      ClientHeight = 38
+      ClientWidth = 960
+      TabOrder = 2
+      object LabelSpan: TLabel
+        Left = 8
+        Height = 15
+        Top = 10
+        Width = 21
+        Caption = 'Last'
+      end
+      object ComboSpan: TComboBox
+        Left = 36
+        Height = 23
+        Top = 6
+        Width = 100
+        ItemHeight = 15
+        ItemIndex = 2
+        Items.Strings = (
+          '1 hour'
+          '6 hours'
+          '24 hours'
+          '2 days'
+          '7 days'
+          '30 days'
+        )
+        Style = csDropDownList
+        TabOrder = 0
+        Text = '24 hours'
+      end
+      object LabelStep: TLabel
+        Left = 148
+        Height = 15
+        Top = 10
+        Width = 39
+        Caption = 'Step (s)'
+      end
+      object SpinStep: TSpinEdit
+        Left = 196
+        Height = 23
+        Top = 6
+        Width = 70
+        MaxValue = 86400
+        MinValue = 1
+        TabOrder = 1
+        Value = 10
+      end
+      object ButtonBackfill: TButton
+        Left = 278
+        Height = 26
+        Top = 5
+        Width = 100
+        Caption = 'Backfill'
+        TabOrder = 2
+        OnClick = ButtonBackfillClick
+      end
+      object ProgressBf: TProgressBar
+        Left = 390
+        Height = 16
+        Top = 10
+        Width = 300
+        Max = 1000
+        TabOrder = 3
+      end
+      object LabelBackfill: TLabel
+        Left = 700
+        Height = 15
+        Top = 10
+        Width = 250
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+      end
+    end
+  end
+  object Splitter1: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 460
+    Width = 980
+    Align = alBottom
+    ResizeAnchor = akBottom
+  end
+  object MemoLog: TMemo
+    Left = 0
+    Height = 135
+    Top = 465
+    Width = 980
+    Align = alBottom
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 3
+  end
+  object Timer1: TTimer
+    Interval = 250
+    OnTimer = Timer1Timer
+    Left = 760
+    Top = 200
+  end
+end

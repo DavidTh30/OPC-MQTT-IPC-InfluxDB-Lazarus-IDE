@@ -1,0 +1,372 @@
+object MainForm: TMainForm
+  Left = 300
+  Height = 680
+  Top = 120
+  Width = 1000
+  Caption = 'InfluxDB Server (Lazarus)'
+  ClientHeight = 660
+  ClientWidth = 1000
+  Menu = MainMenu1
+  Position = poScreenCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  object PanelTop: TPanel
+    Left = 0
+    Height = 84
+    Top = 0
+    Width = 1000
+    Align = alTop
+    BevelOuter = bvNone
+    ClientHeight = 84
+    ClientWidth = 1000
+    TabOrder = 0
+    object LabelPort: TLabel
+      Left = 12
+      Height = 15
+      Top = 15
+      Width = 22
+      Caption = 'Port'
+    end
+    object EditPort: TEdit
+      Left = 42
+      Height = 23
+      Top = 11
+      Width = 60
+      TabOrder = 0
+      Text = '8086'
+    end
+    object LabelData: TLabel
+      Left = 116
+      Height = 15
+      Top = 15
+      Width = 61
+      Caption = 'Data folder'
+    end
+    object EditData: TEdit
+      Left = 184
+      Height = 23
+      Top = 11
+      Width = 220
+      TabOrder = 1
+      Text = 'data'
+    end
+    object ButtonData: TButton
+      Left = 406
+      Height = 23
+      Top = 11
+      Width = 28
+      Caption = '...'
+      OnClick = ButtonDataClick
+      TabOrder = 2
+    end
+    object CheckAutoCreate: TCheckBox
+      Left = 446
+      Height = 19
+      Top = 13
+      Width = 165
+      Caption = 'Create databases on write'
+      Checked = True
+      OnChange = CheckAutoCreateChange
+      State = cbChecked
+      TabOrder = 3
+    end
+    object LabelRet: TLabel
+      Left = 620
+      Height = 15
+      Top = 15
+      Width = 128
+      Caption = 'Retention days (0 = all)'
+    end
+    object SpinRet: TSpinEdit
+      Left = 752
+      Height = 23
+      Top = 11
+      Width = 60
+      MaxValue = 36500
+      OnChange = SpinRetChange
+      TabOrder = 4
+    end
+    object ButtonStart: TButton
+      Left = 886
+      Height = 30
+      Top = 8
+      Width = 100
+      Anchors = [akTop, akRight]
+      Caption = 'Start'
+      OnClick = ButtonStartClick
+      TabOrder = 5
+    end
+    object ShapeState: TShape
+      Left = 12
+      Height = 22
+      Top = 50
+      Width = 22
+      Brush.Color = clSilver
+      Shape = stCircle
+    end
+    object LabelState: TLabel
+      Left = 44
+      Height = 22
+      Top = 52
+      Width = 640
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = 'Server stopped'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object CheckLogRequests: TCheckBox
+      Left = 700
+      Height = 19
+      Top = 52
+      Width = 130
+      Anchors = [akTop, akRight]
+      Caption = 'Log every request'
+      OnChange = CheckLogRequestsChange
+      TabOrder = 6
+    end
+    object CheckAutoStart: TCheckBox
+      Left = 840
+      Height = 19
+      Top = 52
+      Width = 150
+      Anchors = [akTop, akRight]
+      Caption = 'Start at program start'
+      TabOrder = 7
+    end
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 421
+    Top = 84
+    Width = 1000
+    ActivePage = TabDb
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 1
+    object TabDb: TTabSheet
+      Caption = 'Databases'
+      ClientHeight = 393
+      ClientWidth = 992
+      object GridDb: TStringGrid
+        Left = 0
+        Height = 357
+        Top = 0
+        Width = 992
+        Align = alClient
+        ColCount = 7
+        Columns = <
+          item
+            Title.Caption = 'Database'
+            Width = 150
+          end
+          item
+            Title.Caption = 'Measurements'
+            Width = 95
+          end
+          item
+            Title.Caption = 'Series'
+            Width = 70
+          end
+          item
+            Title.Caption = 'Points'
+            Width = 100
+          end
+          item
+            Title.Caption = 'WAL'
+            Width = 80
+          end
+          item
+            Title.Caption = 'Retention'
+            Width = 80
+          end
+          item
+            Title.Caption = 'Measurements (first 8)'
+            Width = 380
+          end>
+        FixedCols = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goRowSelect, goSmoothScroll]
+        RowCount = 1
+        TabOrder = 0
+      end
+      object PanelDbButtons: TPanel
+        Left = 0
+        Height = 36
+        Top = 357
+        Width = 992
+        Align = alBottom
+        BevelOuter = bvNone
+        ClientHeight = 36
+        ClientWidth = 992
+        TabOrder = 1
+        object ButtonCompact: TButton
+          Left = 8
+          Height = 26
+          Top = 5
+          Width = 120
+          Caption = 'Compact now'
+          OnClick = ButtonCompactClick
+          TabOrder = 0
+        end
+      end
+    end
+    object TabQuery: TTabSheet
+      Caption = 'Query (InfluxQL)'
+      ClientHeight = 393
+      ClientWidth = 992
+      object PanelQ: TPanel
+        Left = 0
+        Height = 96
+        Top = 0
+        Width = 992
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 96
+        ClientWidth = 992
+        TabOrder = 0
+        object LabelQDb: TLabel
+          Left = 8
+          Height = 15
+          Top = 10
+          Width = 51
+          Caption = 'Database'
+        end
+        object EditQDb: TEdit
+          Left = 68
+          Height = 23
+          Top = 6
+          Width = 140
+          TabOrder = 0
+        end
+        object ButtonRun: TButton
+          Left = 220
+          Height = 25
+          Top = 5
+          Width = 110
+          Caption = 'Run (F9)'
+          OnClick = ButtonRunClick
+          TabOrder = 1
+        end
+        object LabelQInfo: TLabel
+          Left = 344
+          Height = 15
+          Top = 10
+          Width = 640
+          Anchors = [akTop, akLeft, akRight]
+          AutoSize = False
+        end
+        object MemoQ: TMemo
+          Left = 8
+          Height = 54
+          Top = 36
+          Width = 976
+          Anchors = [akTop, akLeft, akRight]
+          Font.Name = 'Consolas'
+          OnKeyDown = MemoQKeyDown
+          ParentFont = False
+          ScrollBars = ssAutoVertical
+          TabOrder = 2
+        end
+      end
+      object GridResult: TStringGrid
+        Left = 0
+        Height = 197
+        Top = 96
+        Width = 992
+        Align = alClient
+        ColCount = 1
+        DefaultColWidth = 140
+        FixedCols = 0
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goColSizing, goSmoothScroll]
+        RowCount = 1
+        TabOrder = 1
+      end
+      object SplitterJson: TSplitter
+        Cursor = crVSplit
+        Left = 0
+        Height = 5
+        Top = 293
+        Width = 992
+        Align = alBottom
+        ResizeAnchor = akBottom
+      end
+      object MemoJson: TMemo
+        Left = 0
+        Height = 95
+        Top = 298
+        Width = 992
+        Align = alBottom
+        Font.Name = 'Consolas'
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 2
+        WordWrap = False
+      end
+    end
+  end
+  object SplitterLog: TSplitter
+    Cursor = crVSplit
+    Left = 0
+    Height = 5
+    Top = 505
+    Width = 1000
+    Align = alBottom
+    ResizeAnchor = akBottom
+  end
+  object MemoLog: TMemo
+    Left = 0
+    Height = 150
+    Top = 510
+    Width = 1000
+    Align = alBottom
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 2
+  end
+  object MainMenu1: TMainMenu
+    Left = 600
+    Top = 200
+    object MenuFile: TMenuItem
+      Caption = '&File'
+      object MenuClearLog: TMenuItem
+        Caption = '&Clear log'
+        OnClick = MenuClearLogClick
+      end
+      object MenuExit: TMenuItem
+        Caption = 'E&xit'
+        OnClick = MenuExitClick
+      end
+    end
+    object MenuServer: TMenuItem
+      Caption = '&Server'
+      object MenuStart: TMenuItem
+        Caption = '&Start'
+        ShortCut = 116
+        OnClick = MenuStartClick
+      end
+      object MenuStop: TMenuItem
+        Caption = 'S&top'
+        ShortCut = 117
+        OnClick = MenuStopClick
+      end
+    end
+    object MenuHelp: TMenuItem
+      Caption = '&Help'
+      object MenuAbout: TMenuItem
+        Caption = '&About'
+        OnClick = MenuAboutClick
+      end
+    end
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    Left = 680
+    Top = 200
+  end
+  object Timer1: TTimer
+    Interval = 500
+    OnTimer = Timer1Timer
+    Left = 760
+    Top = 200
+  end
+end
